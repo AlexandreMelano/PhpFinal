@@ -69,17 +69,13 @@ function CheckIfAuthenticated() {
             try {
                 $db = DBConnection();
 
-                ////////////////////////////////////
-                // THE CODE BELOW NEEDS TO CHANGE //
-                ////////////////////////////////////
-
-                $db_password = $password;
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
                 $displayName = $_POST["displayName"];
 
                 $query = "INSERT INTO users (username, password, displayName) VALUES (:username, :password, :displayName)";
                 $statement = $db->prepare($query);
                 $statement->bindValue(':username', $username);
-                $statement->bindValue(':password', $db_password);
+                $statement->bindValue(':password', $hashed_password);
                 $statement->bindValue(':displayName', $displayName);
                 $statement->execute();
                 $statement->closeCursor();
